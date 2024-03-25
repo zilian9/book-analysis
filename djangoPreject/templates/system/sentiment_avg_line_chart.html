@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% load static %}
+{% block title %}评论情感概率平均值折线图{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评论情感概率平均值折线图</title>
+</head>
+<body>
+    <h1>评论情感概率平均值折线图</h1>
+    <div id="line_chart" style="width: 800px; height: 400px;"></div>
+</body>
+<script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.min.js"></script>
+<script>
+    var myChart = echarts.init(document.getElementById('line_chart'));
+    myChart.setOption({
+        title: {
+            text: '评论情感概率平均值'
+        },
+        xAxis: {
+            type: 'category',
+            data: {{ date_avg|safe }}
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: {{ sentiment_avg|safe }},
+            type: 'line'
+        }]
+    });
+</script>
+{% endblock %}
+{% block script %}
+
+{% endblock %}
