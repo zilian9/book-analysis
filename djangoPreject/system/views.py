@@ -12,6 +12,9 @@ from django.db.models import Count
 from django.shortcuts import render
 from pyecharts.charts import Line
 from .models import Comment  # 假设你有一个Comment模型，用于存储评论数据
+from django.shortcuts import render
+from django.http import JsonResponse
+import json
 
 def average_sentiment(request):
     # 获取评论数据
@@ -31,20 +34,14 @@ def average_sentiment(request):
     sentiment_avg = []
     for date, sentiment_list in date_sentiment_avg.items():
         avg = sum(sentiment_list) / len(sentiment_list)
-        date_avg.append(date)
+        date_avg.append(date.strftime('%Y-%m-%d'))
         sentiment_avg.append(avg)
 
-    # 使用Pyecharts绘制折线图
-    # line = Line("评论情感概率平均值", width=800, height=400)
-    line = Line()
-    line.width = 800
-    line.height = 400
-    # line.add("平均值", date_avg, sentiment_avg, mark_point=["average"])
-    line.add_xaxis(date_avg)
-    line.add_yaxis("平均值",sentiment_avg)
-    line.render('sentiment_avg_line_chart.html')
+    # 将数据转换为 JSON 格式
+    data = {'dates': date_avg, 'sentiments': sentiment_avg}
+    return render(request, 'system/sentiment_avg_line_chart.html', {'data': json.dumps(data)})
 
-    return render(request, 'sentiment_avg_line_chart.html')
+    return render(request, 'system/sentiment_avg_line_chart.html')
 
 
 from django.shortcuts import render

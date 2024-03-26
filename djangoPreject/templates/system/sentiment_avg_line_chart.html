@@ -4,35 +4,39 @@
 
 {% endblock %}
 {% block content %}
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>评论情感概率平均值折线图</title>
+    <title>Daily Sentiment Average</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
 </head>
 <body>
-    <h1>评论情感概率平均值折线图</h1>
-    <div id="line_chart" style="width: 800px; height: 400px;"></div>
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+    <script>
+        var data = JSON.parse('{{ data|safe }}');
+
+        Highcharts.chart('container', {
+            title: {
+                text: 'Daily Sentiment Average'
+            },
+            xAxis: {
+                categories: data.dates
+            },
+            yAxis: {
+                title: {
+                    text: 'Sentiment Average'
+                }
+            },
+            series: [{
+                name: 'Sentiment Average',
+                data: data.sentiments
+            }]
+        });
+    </script>
 </body>
-<script src="https://cdn.bootcss.com/echarts/4.3.0/echarts.min.js"></script>
-<script>
-    var myChart = echarts.init(document.getElementById('line_chart'));
-    myChart.setOption({
-        title: {
-            text: '评论情感概率平均值'
-        },
-        xAxis: {
-            type: 'category',
-            data: {{ date_avg|safe }}
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: {{ sentiment_avg|safe }},
-            type: 'line'
-        }]
-    });
-</script>
+</html>
+
 {% endblock %}
 {% block script %}
 
