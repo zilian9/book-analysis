@@ -46,9 +46,9 @@ class ControlComment(admin.ModelAdmin, ExportExcelMixin):
     list_per_page = 20
     actions = ['export_as_excel']
 
-admin.site.register(Book,ControlBook)
-admin.site.site_header = '图书分析大屏展示系统'
-admin.site.site_title = '图书分析大屏展示系统'
-admin.site.index_title = '图书分析大屏展示系统'
-
 admin.site.register(Comment,ControlComment)
+admin.site.register(Book,ControlBook)
+admin.site.site_header = '舆情分析大屏展示系统'
+admin.site.site_title = '舆情分析大屏展示系统'
+admin.site.index_title = '舆情分析大屏展示系统'
+
