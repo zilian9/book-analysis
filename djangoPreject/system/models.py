@@ -3,7 +3,7 @@ from django.db import models
 class Comment(models.Model):
     uid = models.CharField(verbose_name="uid",max_length=100)
     nickname = models.CharField(verbose_name="昵称",max_length=100)
-    content = models.TextField(verbose_name="评论内容")
+    content = models.CharField(verbose_name="评论内容",max_length=100)
     date = models.DateField(verbose_name="日期")
     polarity = models.CharField(verbose_name="评论情感极性",max_length=10)
     probability = models.FloatField(verbose_name="评论情感概率")
@@ -28,7 +28,7 @@ class Book(models.Model):
         verbose_name = "舆情信息"
         verbose_name_plural = "舆情信息"
         db_table = "booktable"
-        
+
     def short_detail(self):
         if len(str(self.detail)) > 10:
             return '{}...'.format(str(self.detail)[0:9])
@@ -37,14 +37,14 @@ class Book(models.Model):
 
     short_detail.allow_tags = True
     short_detail.short_description = '详情'
-    
-    
-    
+
+
+
     def short_title(self):
         if len(str(self.title)) > 10:
             return '{}...'.format(str(self.title)[0:9])
         else:
             return str(self.title)
-        
+
     short_title.allow_tags = True
     short_title.short_description = '标题'

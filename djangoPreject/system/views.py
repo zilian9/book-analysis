@@ -16,7 +16,7 @@ from .models import Comment  # 假设你有一个Comment模型，用于存储评
 def average_sentiment(request):
     # 获取评论数据
     comments = Comment.objects.all()
-    
+
     # 计算每天评论情感概率的平均值
     date_sentiment_avg = {}
     for comment in comments:
@@ -26,14 +26,14 @@ def average_sentiment(request):
             date_sentiment_avg[date].append(sentiment)
         else:
             date_sentiment_avg[date] = [sentiment]
-    
+
     date_avg = []
     sentiment_avg = []
     for date, sentiment_list in date_sentiment_avg.items():
         avg = sum(sentiment_list) / len(sentiment_list)
         date_avg.append(date)
         sentiment_avg.append(avg)
-    
+
     # 使用Pyecharts绘制折线图
     # line = Line("评论情感概率平均值", width=800, height=400)
     line = Line()
@@ -43,19 +43,27 @@ def average_sentiment(request):
     line.add_xaxis(date_avg)
     line.add_yaxis("平均值",sentiment_avg)
     line.render('sentiment_avg_line_chart.html')
-    
+
     return render(request, 'sentiment_avg_line_chart.html')
 
 
 from django.shortcuts import render
 from pyecharts import options as opts
 from pyecharts.charts import Pie
+from collections import Counter
 
 def pie_chart(request):
+    # 统计 polarity 字段中不同值的数量
+    comments = Comment.objects.all()
+    polarity_counts = Counter(comment.polarity for comment in comments)
+
+    # 获取极性值和数量
+    polarities = list(polarity_counts.keys())
+    counts = list(polarity_counts.values())
     # 创建一个饼图
     c = (
         Pie()
-        .add("", [list(z) for z in zip(["A", "B", "C", "D", "E"], [1, 2, 3, 4, 5])])
+        .add("", [list(z) for z in zip(polarities, counts)])
         .set_global_opts(title_opts=opts.TitleOpts(title="评论情感倾向分布饼图"))
     )
     # 将饼图转换为HTML格式的字符串
