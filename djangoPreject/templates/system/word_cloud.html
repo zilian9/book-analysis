@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load static %}
+{% block title %}评论情感倾向饼图{% endblock %}
+{% block style %}
+
+{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>词云图页面</title>
+    <!-- 引入 Pyecharts 所需的 CDN 地址 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+</head>
+<body>
+    <!-- 在页面中显示词云图 -->
+    {{ word_cloud_html|safe }}
+</body>
+</html>
+
+{% endblock %}
+{% block script %}
+
+{% endblock %}

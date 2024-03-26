@@ -16,6 +16,53 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import json
 
+from django.shortcuts import render
+from pyecharts import options as opts
+from pyecharts.charts import WordCloud
+from pyecharts.globals import SymbolType
+
+def word_cloud(request):
+    filepath='/Users/k/project/Book_Analysis/O2FmEjpUU_word.txt'
+    word_count = {}
+    fp = open(filepath,'r',encoding='utf8')
+    for line in fp:
+        new_line=[]
+        if len(line)>1:
+            line = line.strip().split(' ')
+            for word in line:
+                if word in word_count:
+                    word_count[word] += 1
+                else:
+                    word_count[word] = 1
+
+    del word_count['spanclass']
+    del word_count['url']
+    del word_count['icon']
+    words = [(word, count) for word, count in word_count.items()]
+    # 构造词云图数据
+    # words = [
+    #     ("Python", 10000),
+    #     ("Django", 6181),
+    #     ("Flask", 4386),
+    #     ("Java", 4055),
+    #     ("C++", 2467),
+    #     ("JavaScript", 2244),
+    #     # 其他词语...
+    # ]
+
+    # 绘制词云图
+    c = (
+        WordCloud()
+        .add("", words, word_size_range=[20, 100], shape=SymbolType.DIAMOND)
+        .set_global_opts(title_opts=opts.TitleOpts(title="词云图示例"))
+    )
+
+    # 将图表转换为 HTML 字符串
+    word_cloud_html = c.render_embed()
+
+    return render(request, 'system/word_cloud.html', {'word_cloud_html': word_cloud_html})
+
+
 def average_sentiment(request):
     # 获取评论数据
     comments = Comment.objects.all()

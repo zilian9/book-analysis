@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('word_cloud/', views.word_cloud, name='word_cloud'),
     path('average_sentiment/', views.average_sentiment, name='average_sentiment'),
     path('pie_chart/', views.pie_chart, name='pie_chart'),
     path('comment_list/', views.comment_list, name='comment_list'),
